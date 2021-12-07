@@ -1,0 +1,78 @@
+﻿  main.cpp
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(88,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(92,36): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(92,27): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(92,18): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(93,36): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(93,27): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(93,18): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(94,36): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(94,27): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(94,18): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(95,36): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(95,27): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(95,18): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(87,6): warning C4101: 'i': unreferenced local variable
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(112,24): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(112,25): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(112,66): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(112,67): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(112,55): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(116,42): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(116,16): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(116,95): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(116,97): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(116,57): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(142,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(142,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(142,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(143,43): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(143,34): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(143,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(144,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(144,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(144,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(145,43): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(145,34): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(145,21): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(159,23): warning C4018: '<': signed/unsigned mismatch
+main.obj : error LNK2019: unresolved external symbol _glewInit@0 referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwInit referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwTerminate referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwCreateWindow referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwWindowShouldClose referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSetWindowShouldClose referenced in function "void __cdecl key_callback(struct GLFWwindow *,int,int,int,int)" (?key_callback@@YAXPAUGLFWwindow@@HHHH@Z)
+main.obj : error LNK2019: unresolved external symbol _glfwPollEvents referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSetInputMode referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSetKeyCallback referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSetCursorPosCallback referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwGetTime referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwMakeContextCurrent referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSwapBuffers referenced in function _main
+main.obj : error LNK2001: unresolved external symbol ___glewBindBuffer
+main.obj : error LNK2001: unresolved external symbol ___glewBufferData
+main.obj : error LNK2001: unresolved external symbol ___glewDeleteBuffers
+main.obj : error LNK2001: unresolved external symbol ___glewGenBuffers
+main.obj : error LNK2001: unresolved external symbol ___glewEnableVertexAttribArray
+main.obj : error LNK2001: unresolved external symbol ___glewGetUniformLocation
+main.obj : error LNK2001: unresolved external symbol ___glewUniformMatrix4fv
+main.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+main.obj : error LNK2001: unresolved external symbol ___glewVertexAttribPointer
+main.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+main.obj : error LNK2001: unresolved external symbol ___glewDeleteVertexArrays
+main.obj : error LNK2001: unresolved external symbol ___glewGenVertexArrays
+main.obj : error LNK2001: unresolved external symbol _glewExperimental
+shader.obj : error LNK2001: unresolved external symbol ___glewAttachShader
+shader.obj : error LNK2001: unresolved external symbol ___glewCompileShader
+shader.obj : error LNK2001: unresolved external symbol ___glewCreateProgram
+shader.obj : error LNK2001: unresolved external symbol ___glewCreateShader
+shader.obj : error LNK2001: unresolved external symbol ___glewDeleteShader
+shader.obj : error LNK2001: unresolved external symbol ___glewGetProgramInfoLog
+shader.obj : error LNK2001: unresolved external symbol ___glewGetProgramiv
+shader.obj : error LNK2001: unresolved external symbol ___glewGetShaderInfoLog
+shader.obj : error LNK2001: unresolved external symbol ___glewGetShaderiv
+shader.obj : error LNK2001: unresolved external symbol ___glewLinkProgram
+shader.obj : error LNK2001: unresolved external symbol ___glewShaderSource
+C:\Users\nerff\source\repos\Libs\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\nerff\source\repos\Libs\glew32s.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\nerff\source\repos\3DModelling\Debug\3DModelling.exe : fatal error LNK1120: 37 unresolved externals
