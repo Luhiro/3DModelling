@@ -53,6 +53,11 @@ GLfloat lastFrame = 0.0f;  	// Time of last frame
 * Pressing 'V' will do the Opposite so you can go back and forth through the animation.
 * Pressin 'Space' will iterate trough each Sphere created from the closest to the origin(0,0,0) to the furthest away.
 * 
+* It also supports preset you can set and save
+* Pressing 'N' will go to the next preset in the array if you are already
+* on the last preset it will just generate a new one of the same preset
+* Pressing 'M' will go to the previous preset in the array if you are already
+* on the first preset it will just generate a new one of the same preset
 */
 
 /* Spheres Structure
@@ -78,57 +83,184 @@ struct Planet
 * 
 * @increments is a global counter so you shouldn't change it unless you really need to.
 * @speedControl is to define how fast we want to iterate trough each sphere when holding 'Space'
-* @resolutionIncrementSpeed is to define how fast we want to increase and decrease the resolution
+* @resolutionIncrementSpeed is to define how much resolution(longtidude and latitudes) we want to increase and decrease
 * of the spheres when holding 'C' and 'V' accordingly
+* @increaseSpeed This is an optional speed variable to control how fast you add the resolution.
+* @decreaseSpeed This is also an optional speed variable to decrease the resolution.
 * @cameraVelocity is to define how fast the camera moves troughout the 3D space
+* @cameraSensitivity defines how fast we want the camera to react to the mouse control
 * 
 */
 double increments = 0;
 double speedControl = 0.08;
 double resolutionIncrementSpeed = .050;
+float increaseSpeed = 1.0f;
+float decreaseSpeed = 3.0f;
 float cameraVelocity = 10.0f;
+GLfloat cameraSensitivity = 0.1f;
 
 /*Lighting
 * 
+* @darkness defines how dark we want the Spheres to become as they get further away from the origin
 * 
 */
 float darkness = 0.5f;
 
-//Grid variables
+/*Grid variables
+* 
+* @maxLength is how many lines we want to be drawn and each line is separated by one unit.
+* @spaceWidth is how many units you can wish to separate each line, this mean we can get bigger grids with less lines
+* This is done in the drawGrid() function and you can change it if want bigger grid or simply spaced out Grid
+* 
+*/
 int maxLength = 80;
-//Size of shape
-float spiralSize = .2f;
+float spaceWidth = 1.0f;
 
-//Other Variables
+/*Planet Variables
+* 
+* @ammountPlanet is how many Spheres we want to generate on the grid
+* @planets is the array that holds the value of all the vertices in each Sphere.
+* @planetResolution this is the starting resolution of a Sphere and it keeps tracks and changes as more is increased/decreased
+* @currentPlanet is a global counter to keep track of which Sphere we are currently seeing when 'Space' is pressed 
+* @planets is the array that holds the value of all the vertices in each Sphere.
+* @maxResolution is the ceiling capped number when incrementing using 'C'
+* @minResolution is flooring capped number when decreasing using 'V'
+* I don't recomend changing the minimum Resolution to anything lower, 2 is the minimum for it to draw a Square/Triangles
+* and Anything below 2 will not render.
+* 
+* All of these variables are utilized in drawSphere(),incrementResolution(),decreaseResolution()
+* 
+*/
+const int ammountPlanet = 100;
+Planet planets[ammountPlanet];
+double planetResolution = 2;
+int currentPlanet = 0;
+int maxResolution = 100;
+int minResolution = 2;
+
+
+/* Spheres spawn generation
+* 
+* @SpiralSize is how clustered the spheres are, smaller numbers will be more clustered in the center 
+* and bigger numbers gives more spread of the Spheres.
+* Use setPlanetsProperties() if you need to change how the Spheres position are generated
+* 
+* This program uses GL_LINE_LOOP because its easier to visualize the Spheres being drawn
+* However it is possible to change the type of shape you want to use if you so desire.
+* @shapeChoice the integer that selects which shape to fill the Spheres we can use to fill the Sphere.
+* @shapes[] is an array that holds the Enums for these types of shapes we can use you can even add more.
+* 
+*/
+float spiralSize = .2f;
+int shapeChoice = 2;
+GLenum shapes[] = { GL_LINES, // choice 0
+					GL_LINE_STRIP, // choice 1
+					GL_LINE_LOOP, // choice 2
+					GL_TRIANGLES, // choice 3
+					GL_TRIANGLE_STRIP, // choice 4
+					GL_TRIANGLE_FAN, // choice 5
+					GL_QUADS, // choice 6
+					GL_QUAD_STRIP, // choice 7
+					GL_POLYGON // choice 8
+};
+
+/*Other Variables
+* 
+* @firstMouse enables to take the value of the first location of the mouse.
+* Do not change this variable unless you really need to.
+* @invertedCameraControls_X if true inverts camera controls for the keys 'A' and 'D'
+* @invertedCameraControls_Y if true inverts camera controls for the keys 'W' and 'S'
+* @invertedMouseControls_X if true inverts mouse controls when moving horizontally
+* @invertedMouseControls_Y if true inverts mouse controls when moving vertically
+* 
+*/
 bool firstMouse = true;
 bool invertedCameraControls_X = false;
 bool invertedCameraControls_Y = false;
 bool invertedMouseControls_X = false;
 bool invertedMouseControls_Y = false;
-GLfloat cameraSensitivity = 0.1f;
-
-// Planet Variables
-int currentPlanet = 0;
-const int ammountPlanet = 100;
-double planetResolution = 2;
-Planet planets[ammountPlanet];
-int maxResolution = 100;
-
-// I don't recomend changing the minimum Resolution to anything lower, 2 is the minimum for it to draw a Square/Triangles
-// Anything below 2 will not render, although feel free to increment it as longer as it less than the maximum.
-int minResolution = 2;
 
 //--------------------------------------------------------------------------------------------------//
 
-//UsePresets
+/*Using Presets
+* 
+* If you want to use Preset the first thing to do is to follow the next Steps
+* @usingPresets turn this variable true if you want to turn on Presets.
+* @totalPresets are the amount of Presets you want to store in the program. This is hardcoded
+* @currentPreset will keep track of which Preset you want to show and helps if you want to scroll over more.
+* The default is 0 and will not show a Preset unless you change the switch statement
+* 
+* If you want to hardcode a new Preset update the totalPresets and place a new switch case inside the usePreset() Function
+* 
+*/
+bool usingPresets = true;
 const int totalPresets = 2;
-bool preset[totalPresets];
+int currentPreset = 1;
+
+void usePreset(int preset) {
+	
+	switch (preset){
+	case 1: {
+		increments = 0;
+		speedControl = 0.08;
+		resolutionIncrementSpeed = .050;
+		increaseSpeed = 1.0f;
+		decreaseSpeed = 3.0f;
+		cameraVelocity = 10.0f;
+		cameraSensitivity = 0.1f;
+
+		darkness = 0.5f;
+
+		maxLength = 80;
+		spaceWidth = 1.0f;
+
+		const int ammountPlanets = 10;
+		Planet planets[ammountPlanets];
+		planetResolution = 2;
+		currentPlanet = 0;
+		maxResolution = 100;
+		minResolution = 2;
+
+		spiralSize = .2f;
+		shapeChoice = 4;
+		break;
+	}
+	case 2: {
+		increments = 0;
+		speedControl = 0.08;
+		resolutionIncrementSpeed = .050;
+		increaseSpeed = 1.0f;
+		decreaseSpeed = 3.0f;
+		cameraVelocity = 10.0f;
+		cameraSensitivity = 0.1f;
+
+		darkness = 0.8f;
+
+		maxLength = 100;
+		spaceWidth = 1.0f;
+
+		const int ammountPlanets = 100;
+		Planet planets[ammountPlanets];
+		planetResolution = 2;
+		currentPlanet = 0;
+		maxResolution = 100;
+		minResolution = 2;
+
+		spiralSize = .1f;
+		shapeChoice = 4;
+		break;
+	}
+	}
+}
+
 
 //--------------------------------------------------------------------------------------------------//
 
+/*
 
-
+*/
 void drawGrid() {
+
 	int i;
 
 	for (i= 0; i < maxLength*2; i++)
@@ -136,13 +268,13 @@ void drawGrid() {
 		glPushMatrix();
 		glBegin(GL_LINES);
 		if (i< maxLength) {
-			glVertex3f(-(maxLength/2), -0.1, i-(maxLength/2));
-			glVertex3f((maxLength / 2) - 1, -0.1, i - (maxLength / 2));
+			glVertex3f((-(maxLength/2)) * spaceWidth, -0.1, (i-(maxLength/2))*spaceWidth);
+			glVertex3f(((maxLength / 2) - 1) * spaceWidth, -0.1, (i - (maxLength / 2))* spaceWidth);
 		}
 		else
 		{
-			glVertex3f(i-(maxLength*1.5), -0.1, -(maxLength / 2));
-			glVertex3f(i-(maxLength*1.5), -0.1, (maxLength/2)-1);
+			glVertex3f((i-(maxLength*1.5)) * spaceWidth, -0.1, -(maxLength / 2)* spaceWidth);
+			glVertex3f((i-(maxLength*1.5)) * spaceWidth, -0.1, ((maxLength/2)-1)* spaceWidth);
 		}
 		glEnd();
 		glPopMatrix();
@@ -163,22 +295,7 @@ void drawSphere(double r, double xpos, double ypos, double zpos) {
 		double z1 = sin(lat1);
 		double zr1 = cos(lat1);
 
-		/*
-		* Note for developer using this
-		* This program uses lines because its easier to visualize the Spheres being drawn
-		* However you are free to experiment with the others types of shapes inside the glBegin(*change here*)
-		* 
-		* GL_LINES
-		* GL_LINE_STRIP
-		* GL_LINE_LOOP
-		* GL_TRIANGLES
-		* GL_TRIANGLE_STRIP
-		* GL_TRIANGLE_FAN
-		* GL_QUADS
-		* GL_QUAD_STRIP
-		* GL_POLYGON
-		*/
-		glBegin(GL_LINE_LOOP);
+		glBegin(shapes[shapeChoice]);
 
 
 		for (j = 0; j <= planetResolution; j++) {
@@ -186,8 +303,6 @@ void drawSphere(double r, double xpos, double ypos, double zpos) {
 			double x = cos(lng);
 			double y = sin(lng);
 			
-			
-			//
 			glNormal3f(x * zr0, y * zr0, z0);
 			glVertex3f((r * x * zr0) + xpos, r * y * zr0+ ypos, (r * z0)+ zpos);
 			glNormal3f(x * zr1, y * zr1, z1);
@@ -299,11 +414,19 @@ void changeView() {
 * 
 */
 void incrementResolution() {
-	planetResolution = planetResolution + resolutionIncrementSpeed;
+	planetResolution = planetResolution + resolutionIncrementSpeed*increaseSpeed;
 	
 }
 void decreaseResolution() {
-	planetResolution = planetResolution - resolutionIncrementSpeed;
+	planetResolution = planetResolution - resolutionIncrementSpeed*decreaseSpeed;
+}
+
+void increasePreset() {
+	currentPreset++;
+}
+
+void decreasePreset() {
+	currentPreset--;
 }
 
 int main(void)
@@ -349,6 +472,9 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);
 
 	// Setup all planets properties to be ready and be drawn, this has to be before the drawing loop
+	if (usingPresets) {
+		usePreset(currentPreset);
+	}
 	setPlanetsProperties();
 
 	//++++++++++Build and compile shader program+++++++++++++++++++++
@@ -396,7 +522,7 @@ int main(void)
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
@@ -422,7 +548,11 @@ int main(void)
 	return 0;
 }
 
- //Is called whenever a key is pressed/released via GLFW
+/*
+* 
+* 
+* 
+*/ //Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -471,6 +601,21 @@ void takeInput() {
 		if (planetResolution >= minResolution) {
 			decreaseResolution();
 		}
+	}
+	if (keys[GLFW_KEY_N]) {
+		int temp = currentPreset;
+		if (currentPreset <= totalPresets) {
+			increasePreset();
+		}
+		usePreset(currentPreset);
+		setPlanetsProperties();
+	}
+	if (keys[GLFW_KEY_M]) {
+		if (currentPreset >= 1) {
+			decreasePreset();
+		}
+		usePreset(currentPreset);
+		setPlanetsProperties();
 	}
 }
 
