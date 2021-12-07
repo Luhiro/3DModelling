@@ -5,7 +5,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include<ctime>
+
 
 // GLM Mathematics
 #include <glm/glm.hpp>
@@ -17,6 +17,7 @@
 #include "shader.h"
 #include <corecrt_math_defines.h>
 
+
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -26,14 +27,14 @@ void takeInput();
 // Window dimensions
 const GLuint WIDTH = 640, HEIGHT = 640;
 
-// Camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 10.0f, 20.0f);
+// Camera Position and similar Properties
+glm::vec3 cameraPos = glm::vec3(0.0f, 40.0f, 20.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right (due to how Eular angles work) so we initially rotate a bit to the left.
+// Yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right
+// (due to how Eular angles work) so we initially rotate a bit to the left.
 GLfloat yaw = -90.0f;	
-GLfloat pitch = -30.0f;
+GLfloat pitch = -90.0f;
 GLfloat lastX = WIDTH / 2.0;
 GLfloat lastY = HEIGHT / 2.0;
 bool keys[1024];
@@ -42,26 +43,27 @@ bool keys[1024];
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
 
-// SpeedVariables
-double increments = 0;
-double speedControl = 0.08;
-double resolutionIncrement = .010;
-float cameraVelocity = 10.0f;
+/*
+* The next Upcoming variables are all up to change by the user.
+* I recommend experimenting with every kind of permutation until you get a result you enjoyed.
+* I have set some presets but you can also make your own if you save the variables inside the functions.
+* The Program will spawn spheres inside a Grid and both can be configured.
+* 
+* Pressing 'C' will increment the resolution and vertices utilized in the Spheres.
+* Pressing 'V' will do the Opposite so you can go back and forth through the animation.
+* Pressin 'Space' will iterate trough each Sphere created from the closest to the origin(0,0,0) to the furthest away.
+* 
+*/
 
-//ligthing 
-float darkness = 0.6f;
-
-//Grid variables
-int maxLength = 80;
-
-//Other Variables
-bool firstMouse = true;
-bool invertedCameraControls_X = false;
-bool invertedCameraControls_Y = false;
-bool invertedMouseControls_X = false;
-bool invertedMouseControls_Y = false;
-GLfloat cameraSensitivity = 0.1f;
-
+/* Spheres Structure
+* 
+* This is the struct that is used to build all the Spheres in the program feel free to change if you need anything else
+* It holds values for the standard radius of 1.
+* The position which is changed in setPlanetsProperties()
+* The id is incremented with the new creation of each sphere
+* The RGB colour is also stored and currently set randomly in the setPlanetsProperties()
+* 
+*/ 
 struct Planet
 {
 	double radius = 1;
@@ -72,9 +74,42 @@ struct Planet
 	float blue;
 };
 
+/*SpeedVariables
+* 
+* @increments is a global counter so you shouldn't change it unless you really need to.
+* @speedControl is to define how fast we want to iterate trough each sphere when holding 'Space'
+* @resolutionIncrementSpeed is to define how fast we want to increase and decrease the resolution
+* of the spheres when holding 'C' and 'V' accordingly
+* @cameraVelocity is to define how fast the camera moves troughout the 3D space
+* 
+*/
+double increments = 0;
+double speedControl = 0.08;
+double resolutionIncrementSpeed = .050;
+float cameraVelocity = 10.0f;
+
+/*Lighting
+* 
+* 
+*/
+float darkness = 0.5f;
+
+//Grid variables
+int maxLength = 80;
+//Size of shape
+float spiralSize = .2f;
+
+//Other Variables
+bool firstMouse = true;
+bool invertedCameraControls_X = false;
+bool invertedCameraControls_Y = false;
+bool invertedMouseControls_X = false;
+bool invertedMouseControls_Y = false;
+GLfloat cameraSensitivity = 0.1f;
+
 // Planet Variables
 int currentPlanet = 0;
-const int ammountPlanet = 10;
+const int ammountPlanet = 100;
 double planetResolution = 2;
 Planet planets[ammountPlanet];
 int maxResolution = 100;
@@ -84,6 +119,13 @@ int maxResolution = 100;
 int minResolution = 2;
 
 //--------------------------------------------------------------------------------------------------//
+
+//UsePresets
+const int totalPresets = 2;
+bool preset[totalPresets];
+
+//--------------------------------------------------------------------------------------------------//
+
 
 
 void drawGrid() {
@@ -143,7 +185,9 @@ void drawSphere(double r, double xpos, double ypos, double zpos) {
 			double lng = 2 * M_PI * (double)(j - 1) / planetResolution;
 			double x = cos(lng);
 			double y = sin(lng);
-
+			
+			
+			//
 			glNormal3f(x * zr0, y * zr0, z0);
 			glVertex3f((r * x * zr0) + xpos, r * y * zr0+ ypos, (r * z0)+ zpos);
 			glNormal3f(x * zr1, y * zr1, z1);
@@ -164,30 +208,18 @@ void drawSphere(double r, double xpos, double ypos, double zpos) {
 * 
 * 
 */
-void setPlanetsCoordinates() {
+void setPlanetsProperties() {
 
 	for (signed i = 1; i < ammountPlanet+1; i++)
 	{
+
+		srand((unsigned int)time(NULL));
 		planets[i-1].red = (float)rand() / RAND_MAX;
 		planets[i-1].green = (float)rand() / RAND_MAX;
 		planets[i-1].blue = (float)rand() / RAND_MAX;
 
-		 srand((unsigned int)time(NULL));
-		 double r = (double)(rand() /RAND_MAX);
-		 planets[i-1].radius += (r);
-		 r = ((double)rand() / (RAND_MAX));
-		 planets[i-1].xpos = (i - 1) + r+i* planets[i - 1].radius;
-		 r = ((double)rand() / (RAND_MAX));
-		 planets[i-1].zpos = (i - 1) + r + i* planets[i - 1].radius;
-
-
-		 //TODO randomize spawn
-		 if (i % 2 == 0) {
-			 srand((unsigned int)time(NULL));
-			 r = (-1 +((double)rand() / (RAND_MAX)));
-			 planets[i - 1].xpos = planets[i - 1].xpos * sin(r);
-			 planets[i - 1].zpos = planets[i - 1].zpos * cos(r);
-		}
+		planets[i-1].xpos = cos(i - 1) *(i-1)* spiralSize;
+		planets[i-1].zpos = sin(i - 1) *(i-1)* spiralSize;
 	}
 }
 
@@ -218,9 +250,9 @@ void drawPlanets(GLuint shader) {
 		glUniform3f(objectColorLoc, planets[i].red, planets[i].green, planets[i].blue);
 
 		glUniform3f(lightColorLoc,
-			1.0f-(darkness - (darkness / (i + 1))),
-			1.0f-(darkness - (darkness / (i + 1))),
-			1.0f-(darkness -(darkness /(i+1))));
+			1.0f-(darkness - (darkness / (ammountPlanet/(ammountPlanet-i)))),
+			1.0f-(darkness - (darkness / (ammountPlanet / (ammountPlanet - i)))),
+			1.0f-(darkness -(darkness / (ammountPlanet / (ammountPlanet - i)))));
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 	
 
@@ -267,11 +299,11 @@ void changeView() {
 * 
 */
 void incrementResolution() {
-	planetResolution = planetResolution + resolutionIncrement;
+	planetResolution = planetResolution + resolutionIncrementSpeed;
 	
 }
 void decreaseResolution() {
-	planetResolution = planetResolution - resolutionIncrement;
+	planetResolution = planetResolution - resolutionIncrementSpeed;
 }
 
 int main(void)
@@ -317,7 +349,7 @@ int main(void)
 	glEnable(GL_DEPTH_TEST);
 
 	// Setup all planets properties to be ready and be drawn, this has to be before the drawing loop
-	setPlanetsCoordinates();
+	setPlanetsProperties();
 
 	//++++++++++Build and compile shader program+++++++++++++++++++++
 	GLuint shaderProgram = initShader("vert.glsl","frag.glsl");
@@ -364,7 +396,7 @@ int main(void)
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		//model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
@@ -415,7 +447,6 @@ void do_movement()
 		inverted_Y = -1;
 	}
 
-	// Camera controls
 	GLfloat cameraSpeed = cameraVelocity * deltaTime;
 	if (keys[GLFW_KEY_W])
 		cameraPos += cameraSpeed * cameraFront* inverted_Y;

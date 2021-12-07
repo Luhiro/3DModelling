@@ -1,26 +1,29 @@
 ﻿  main.cpp
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(97,38): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(97,52): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(97,15): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(98,44): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(98,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(98,31): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(102,40): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(102,56): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(102,16): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(103,53): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(103,55): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(103,16): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(147,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(147,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(147,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(148,64): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(148,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(148,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(149,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(149,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(149,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(150,64): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(150,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
-C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(150,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(100,38): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(100,52): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(100,15): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(101,44): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(101,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(101,31): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(105,40): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(105,56): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(105,16): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(106,53): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(106,55): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(106,16): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(152,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(152,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(152,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(153,64): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(153,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(153,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(154,33): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(154,26): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(154,17): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(155,64): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(155,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\nerff\source\repos\3DModelling\3DModelling\main.cpp(155,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\nerff\source\repos\3DModelling\x64\Debug\vc120.pdb'; linking object as if no debug info
   3DModelling.vcxproj -> C:\Users\nerff\source\repos\3DModelling\x64\Debug\3DModelling.exe
