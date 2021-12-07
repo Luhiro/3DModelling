@@ -23,17 +23,7 @@ Simply start running the main file.
 You can change some variables defined in the beggining of the main.cpp for different results.
 Each one has comments to help you understand what they do and even what restrictions you should avoid
 
-
-```
-code blocks for commands
-```
-
 ## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
 
 ## Authors
 
