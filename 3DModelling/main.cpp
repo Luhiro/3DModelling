@@ -51,7 +51,10 @@ GLfloat lastFrame = 0.0f;  	// Time of last frame
 * 
 * Pressing 'C' will increment the resolution and vertices utilized in the Spheres.
 * Pressing 'V' will do the Opposite so you can go back and forth through the animation.
-* Pressin 'Space' will iterate trough each Sphere created from the closest to the origin(0,0,0) to the furthest away.
+* Pressin 'Space' will center the camera above the center sphere
+* 
+* Pressing 'Q' will increment the speed of the camera rotation
+* Pressing 'E' will decrement the speed of the camera rotation
 * 
 * It also supports preset you can set and save
 * Pressing 'N' will go to the next preset in the array if you are already
@@ -92,19 +95,20 @@ struct Planet
 * 
 */
 double increments = 0;
-double speedControl = 0.08;
+double speedControl = 0.008;
 double resolutionIncrementSpeed = .050;
 float increaseSpeed = 1.0f;
 float decreaseSpeed = 3.0f;
 float cameraVelocity = 10.0f;
 GLfloat cameraSensitivity = 0.1f;
+GLfloat cameraRotationSpeed = 1;
 
 /*Lighting
 * 
 * @darkness defines how dark we want the Spheres to become as they get further away from the origin
 * 
 */
-float darkness = 0.5f;
+float darkness = 0.3f;
 
 /*Grid variables
 * 
@@ -193,10 +197,14 @@ bool invertedMouseControls_Y = false;
 * If you want to hardcode a new Preset update the totalPresets and place a new switch case inside the usePreset() Function
 * 
 */
-bool usingPresets = true;
+bool usingPresets = false;
 const int totalPresets = 2;
 int currentPreset = 1;
 
+/*
+* 
+* 
+*/
 void usePreset(int preset) {
 	
 	switch (preset){
@@ -257,7 +265,9 @@ void usePreset(int preset) {
 //--------------------------------------------------------------------------------------------------//
 
 /*
-
+* This method uses a loop to draw a grid using lines given the parameters
+* This grid is squared grid and each line is equally spaced out
+* 
 */
 void drawGrid() {
 
@@ -265,7 +275,6 @@ void drawGrid() {
 
 	for (i= 0; i < maxLength*2; i++)
 	{
-		glPushMatrix();
 		glBegin(GL_LINES);
 		if (i< maxLength) {
 			glVertex3f((-(maxLength/2)) * spaceWidth, -0.1, (i-(maxLength/2))*spaceWidth);
@@ -277,10 +286,14 @@ void drawGrid() {
 			glVertex3f((i-(maxLength*1.5)) * spaceWidth, -0.1, ((maxLength/2)-1)* spaceWidth);
 		}
 		glEnd();
-		glPopMatrix();
 	}
 }
 
+/*
+* This method draws a Sphere given a position and radius
+* After the Sphere is place in the 3D enviroment it will start generating itself by how many longitudes and latitudes given
+* 
+*/
 void drawSphere(double r, double xpos, double ypos, double zpos) {
 
 	int i, j;
@@ -314,13 +327,8 @@ void drawSphere(double r, double xpos, double ypos, double zpos) {
 }
 
 /*
-* 
-* 
-* 
-* 
-* 
-* 
-* 
+* This method iterates through each Sphere and sets the colour and position
+* This could be used to define what shape we are going to draw, therefore this should always be called at least once before you start drawing them
 * 
 */
 void setPlanetsProperties() {
@@ -339,17 +347,11 @@ void setPlanetsProperties() {
 }
 
 /*
+* If the Spheres properties are defined, this method will iterate trough all of them and call the method to start drawing them
+* This includes colour and you can change to your own liking.
+* There is currently a implementation for the colour to subdue as it gets to the last Sphere in the array
 * 
 * 
-* 
-* 
-* 
-* 
-* 
-* 
-* 
-* 
-*
 */
 void drawPlanets(GLuint shader) {
 
@@ -377,19 +379,11 @@ void drawPlanets(GLuint shader) {
 }
 
 /*
-* 
-* 
-* 
-* 
-* 
-* 
+* This method will update the camera and jump to a Sphere so it is possible to visualize each one individually 
 * 
 */
 void changeView() {
 
-	cameraPos = glm::vec3(planets[currentPlanet].xpos, planets[currentPlanet].ypos +10, planets[currentPlanet].zpos);
-
-	//TODO respotiion camera
 	GLfloat yaw = -90.0f;
 	GLfloat pitch = -90.0f;
 
@@ -398,15 +392,14 @@ void changeView() {
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
+	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	cameraPos = glm::vec3(planets[0].xpos, planets[0].ypos + 30, planets[0].zpos);
 
-	increments = increments + speedControl;
-	if (increments>1) {
-		currentPlanet++;
-		increments = 0;
-	}
-	if (currentPlanet > ammountPlanet) {
-		currentPlanet = 0;
-	}
+	glm::mat4 model;
+	glm::mat4 view;
+	glm::mat4 projection;
+
+ 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 
 /*
@@ -427,6 +420,22 @@ void increasePreset() {
 
 void decreasePreset() {
 	currentPreset--;
+}
+void increaseRotationSpeed() {
+	cameraRotationSpeed = cameraRotationSpeed+ speedControl;
+}
+void decreaseRotationSpeed() {
+	cameraRotationSpeed = cameraRotationSpeed- speedControl;
+}
+
+/*
+* This method should be called everytime you want to refresh the variables utilized for the Sphere generation presets
+* It uses the currentPreset variable to update each Spheres properties
+*
+*/
+void refreshPreset() {
+	usePreset(currentPreset);
+	setPlanetsProperties();
 }
 
 int main(void)
@@ -496,8 +505,6 @@ int main(void)
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Use cooresponding shader when setting uniforms/drawing objects
-
 		glUseProgram(shaderProgram);
 		GLint objectColorLoc = glGetUniformLocation(shaderProgram, "objectColor");
 		GLint lightColorLoc = glGetUniformLocation(shaderProgram, "lightColor");
@@ -515,14 +522,11 @@ int main(void)
 		do_movement();
 		takeInput();
 
-		// use shader
-		glUseProgram(shaderProgram);
-
 		// Create transformations
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		//model = glm::rotate(model, (GLfloat)glfwGetTime() * 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, (GLfloat)glfwGetTime() * cameraRotationSpeed, glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
@@ -550,9 +554,9 @@ int main(void)
 
 /*
 * 
+* Is called whenever a key is pressed/released via GLFW
 * 
-* 
-*/ //Is called whenever a key is pressed/released via GLFW
+*/
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -566,6 +570,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+
+/*
+* This method lets the user control the camera by moving with the WASD keys
+* It also has some logic to implement reverse controls
+* 
+*/
 void do_movement()
 {
 	float inverted_X = 1;
@@ -588,6 +598,10 @@ void do_movement()
 		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed* inverted_X;
 }
 
+/*
+* Searches for a certain input and runs a method call everytime it coincides with the preferred button press
+* 
+*/
 void takeInput() {
 	if (keys[GLFW_KEY_SPACE]) {
 		changeView();
@@ -603,22 +617,33 @@ void takeInput() {
 		}
 	}
 	if (keys[GLFW_KEY_N]) {
-		int temp = currentPreset;
-		if (currentPreset <= totalPresets) {
+		if (currentPreset <= totalPresets && usingPresets) {
 			increasePreset();
+			refreshPreset();
 		}
-		usePreset(currentPreset);
-		setPlanetsProperties();
 	}
 	if (keys[GLFW_KEY_M]) {
-		if (currentPreset >= 1) {
+		if (currentPreset >= 1 && usingPresets) {
 			decreasePreset();
+			refreshPreset();
 		}
-		usePreset(currentPreset);
-		setPlanetsProperties();
+	}
+	if (keys[GLFW_KEY_Q]) {
+		if (cameraRotationSpeed < 50) {
+			increaseRotationSpeed();
+		}
+	}
+	if (keys[GLFW_KEY_E]) {
+		if (cameraRotationSpeed > 1) {
+			decreaseRotationSpeed();
+		}
 	}
 }
 
+/*
+* 
+* 
+*/
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	float inverted_X = 1;
