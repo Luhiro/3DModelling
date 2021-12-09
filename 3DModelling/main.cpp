@@ -108,7 +108,7 @@ GLfloat cameraRotationSpeed = 1;
 * @darkness defines how dark we want the Spheres to become as they get further away from the origin
 * 
 */
-float darkness = 0.3f;
+float darkness = 0.0f;
 
 /*Grid variables
 * 
@@ -117,7 +117,7 @@ float darkness = 0.3f;
 * This is done in the drawGrid() function and you can change it if want bigger grid or simply spaced out Grid
 * 
 */
-int maxLength = 80;
+int maxLength = 200;
 float spaceWidth = 1.0f;
 
 /*Planet Variables
@@ -341,7 +341,7 @@ void setPlanetsProperties() {
 		planets[i-1].green = (float)rand() / RAND_MAX;
 		planets[i-1].blue = (float)rand() / RAND_MAX;
 
-		planets[i-1].xpos = cos(i - 1) *(i-1)* spiralSize;
+		planets[i-1].xpos = tan(i - 1) *(i-1)* spiralSize;
 		planets[i-1].zpos = sin(i - 1) *(i-1)* spiralSize;
 	}
 }
@@ -360,10 +360,11 @@ void drawPlanets(GLuint shader) {
 	GLint lightColorLoc = glGetUniformLocation(shader, "lightColor");
 	GLint lightPosLoc = glGetUniformLocation(shader, "lightPos");
 
-	glm::vec3 lightPos(0.0f, .0f, .0f);
 
 	for (signed int i = 0; i < ammountPlanet; i++)
 	{
+		glm::vec3 lightPos(planets[i].xpos, planets[i].ypos, planets[i].zpos);
+
 		glUniform3f(objectColorLoc, planets[i].red, planets[i].green, planets[i].blue);
 
 		glUniform3f(lightColorLoc,
@@ -526,7 +527,7 @@ int main(void)
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		model = glm::rotate(model, (GLfloat)glfwGetTime() * cameraRotationSpeed, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, (GLfloat)glfwGetTime() * -cameraRotationSpeed, glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
