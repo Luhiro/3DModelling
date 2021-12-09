@@ -108,7 +108,7 @@ GLfloat cameraRotationSpeed = 1;
 * @darkness defines how dark we want the Spheres to become as they get further away from the origin
 * 
 */
-float darkness = 0.0f;
+float darkness = 0.7f;
 
 /*Grid variables
 * 
@@ -117,7 +117,7 @@ float darkness = 0.0f;
 * This is done in the drawGrid() function and you can change it if want bigger grid or simply spaced out Grid
 * 
 */
-int maxLength = 200;
+int maxLength = 80;
 float spaceWidth = 1.0f;
 
 /*Planet Variables
@@ -156,7 +156,7 @@ int minResolution = 2;
 * 
 */
 float spiralSize = .2f;
-int shapeChoice = 2;
+int shapeChoice = 7;
 GLenum shapes[] = { GL_LINES, // choice 0
 					GL_LINE_STRIP, // choice 1
 					GL_LINE_LOOP, // choice 2
@@ -183,6 +183,7 @@ bool invertedCameraControls_X = false;
 bool invertedCameraControls_Y = false;
 bool invertedMouseControls_X = false;
 bool invertedMouseControls_Y = false;
+bool rotateCamera = true;
 
 //--------------------------------------------------------------------------------------------------//
 
@@ -341,7 +342,7 @@ void setPlanetsProperties() {
 		planets[i-1].green = (float)rand() / RAND_MAX;
 		planets[i-1].blue = (float)rand() / RAND_MAX;
 
-		planets[i-1].xpos = tan(i - 1) *(i-1)* spiralSize;
+		planets[i-1].xpos = cos(i - 1) *(i-1)* spiralSize;
 		planets[i-1].zpos = sin(i - 1) *(i-1)* spiralSize;
 	}
 }
@@ -359,7 +360,6 @@ void drawPlanets(GLuint shader) {
 	GLint objectColorLoc = glGetUniformLocation(shader, "objectColor");
 	GLint lightColorLoc = glGetUniformLocation(shader, "lightColor");
 	GLint lightPosLoc = glGetUniformLocation(shader, "lightPos");
-
 
 	for (signed int i = 0; i < ammountPlanet; i++)
 	{
@@ -404,7 +404,7 @@ void changeView() {
 }
 
 /*
-* 
+* Methods to increment and decrement variables utilized in the program
 * 
 */
 void incrementResolution() {
@@ -502,7 +502,6 @@ int main(void)
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		/* Render here */
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -523,29 +522,25 @@ int main(void)
 		do_movement();
 		takeInput();
 
-		// Create transformations
 		glm::mat4 model;
 		glm::mat4 view;
 		glm::mat4 projection;
-		//model = glm::rotate(model, (GLfloat)glfwGetTime() * -cameraRotationSpeed, glm::vec3(0.0f, 1.0f, 0.0f));
-		
+		if (rotateCamera) {
+			model = glm::rotate(model, (GLfloat)glfwGetTime() * -cameraRotationSpeed, glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		projection = glm::perspective(45.0f, (GLfloat)WIDTH / (GLfloat)HEIGHT, 0.1f, 100.0f);
 
-		// Get their uniform location
 		GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
 		GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
 		GLint projLoc = glGetUniformLocation(shaderProgram, "projection");
-		// Pass them to the shaders
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
-		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
-		/* Poll for and process events */
 		glfwPollEvents();
 	}
 
@@ -642,7 +637,7 @@ void takeInput() {
 }
 
 /*
-* 
+* Takes input from the movement of the mouuse and updates the camera positions as it moves
 * 
 */
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
@@ -675,7 +670,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	yaw += xoffset;
 	pitch += yoffset;
 
-	// Make sure that when pitch is out of bounds, screen doesn't get flipped
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
